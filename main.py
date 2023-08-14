@@ -4,14 +4,15 @@ import numpy as np
 import os 
 import cv2 
 
+#codeformer pip fork https://github.com/Oh-hi-marx/codeformer-pip
 from codeformer.app import inference_app
 from facelib import FaceDetector
 
 from upscale import StableUpscaler
 
 
-detector = FaceDetector()
-#upscaler = StableUpscaler() 
+detector = FaceDetector() #facelib https://github.com/Oh-hi-marx/codeformer-pip
+#upscaler = StableUpscaler() #stable diffusion 4x upscaler #https://huggingface.co/docs/diffusers/api/pipelines/stable_diffusion/upscale
 
 files = os.listdir("inputs")
 for imagepath in files:
@@ -28,6 +29,11 @@ for imagepath in files:
         landmark = landmarks[i].cpu().numpy()
         print(box, landmark)
         face = image[int(box[1]):int(box[3]), int(box[0]):int(box[2])]
+
+        for l in landmark:
+            point = (int(l[0]-box[0]),int( l[1] - box[1]))
+            face = cv2.circle(face, point, radius=1, color=(0, 0, 255), thickness=-1)
+
         cv2.imwrite("outputs" + os.sep + imagepath, face)
         '''
         face = face.cpu().numpy() #convert from tensor to numpy
