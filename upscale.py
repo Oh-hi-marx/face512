@@ -80,7 +80,7 @@ class StableUpscaler:
               
         #https://huggingface.co/docs/diffusers/api/pipelines/stable_diffusion/upscale
         upscaled_image = self.pipeline(prompt=prompt, image=img, num_inference_steps = num_steps, noise_level = noise_level, guidance_scale  = guidance_scale).images[0]
-        torch.cuda.empty_cache()
+
         return upscaled_image
     
     def upscaleFolder(self, path, num_steps , maxSize, noise_level, prompt, guidance_scale):
